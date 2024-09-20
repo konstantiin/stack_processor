@@ -8,9 +8,12 @@ import machine
 import pytest
 import translator
 from pathlib import Path
+
+
 def TDirectory():
-  dir_name = "/test/" + str(random.randint(100, 999))
-  Path(dir_name).mkdir(parents = True, exist_ok = True)
+    dir_name = "/test/" + str(random.randint(100, 999))
+    Path(dir_name).mkdir(parents=True, exist_ok=True)
+
 
 @pytest.mark.golden_test("golden/*.yml")
 def test_translator_asm_and_machine(golden, caplog):
