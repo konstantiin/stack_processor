@@ -2,12 +2,11 @@ import contextlib
 import io
 import logging
 import os
-import tempfile
+from pathlib import Path
 
 import machine
 import pytest
 import translator
-from pathlib import Path
 
 
 def TDirectory():

@@ -1,5 +1,5 @@
 """
-everything is a function)) 
+everything is a function))
 """
 available_functions = {
     "statement-list": -1,  # ok

@@ -1,10 +1,9 @@
-from translator.lisp_functions import available_functions
 
-import re
+from translator.lisp_functions import available_functions
 
 numbers = "0123456789"
 """
-variables and constants are treated like functions with 0 args 
+variables and constants are treated like functions with 0 args
 """
 
 

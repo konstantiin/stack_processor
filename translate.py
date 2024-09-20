@@ -1,9 +1,9 @@
-import re
 import sys
-from translator.statement import Statement
-from translator.inliner import Inliner
-from translator.encoder import Encoder
+
 import translator.preprocess as preprocess
+from translator.encoder import Encoder
+from translator.inliner import Inliner
+from translator.statement import Statement
 
 
 def translate(text):

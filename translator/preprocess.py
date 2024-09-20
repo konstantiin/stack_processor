@@ -26,7 +26,7 @@ def remove_comments(text):
 
 
 def remove_spaces(text):
-    text, _ = re.subn("\s*", "", text)
+    text, _ = re.subn(r"\s*", "", text)
     return text
 
 
