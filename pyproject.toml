@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "my_comp"
+name = "stack_comp"
 version = "0.1.0"
 description = "Translator + processor model for Assembler"
-authors = ["Luchinkin Konstantin<kosticc@yandex.ru>"]
+authors = ["Luchinkin Konstantin <kosticc@yandex.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
