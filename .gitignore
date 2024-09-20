@@ -1,0 +1,5 @@
+.idea
+translated
+*.drawio
+__pycache__
+logs
