@@ -5,7 +5,7 @@ class Encoder:
   def __init__(self, root):
     self.root = root
     self.mnemcode = Mnemcode(0)
-    self.memory_stack_ptr = 0xffffff
+    self.data_memory = 0x0000000
     self.variables = {}
 
   def recursive_encoding(self, node):    
@@ -15,13 +15,13 @@ class Encoder:
         for arg in node.params:
           instr.concat(self.recursive_encoding(arg))
       case "+":
-        instr.concat(self.recursive_encoding(node.params[0]))
-        instr.concat(self.recursive_encoding(node.params[1]))
-        instr.append("add")
+        instr.concat(self.recursive_encoding(node.params[0])) #(r1)
+        instr.concat(self.recursive_encoding(node.params[1])) #(r1,r2)
+        instr.append("add")                                   #(r1+r2)
       case "-"|"<":
-        instr.concat(self.recursive_encoding(node.params[0]))
-        instr.concat(self.recursive_encoding(node.params[1]))
-        instr.append("sub")
+        instr.concat(self.recursive_encoding(node.params[0])) #(r1)
+        instr.concat(self.recursive_encoding(node.params[1])) #(r1,r2)
+        instr.append("sub")                                   #(r1-r2)
       case "<=":
         instr.concat(self.recursive_encoding(node.params[0]))  #(r1)
         instr.concat(self.recursive_encoding(node.params[1]))  #(r1,r2)
@@ -29,65 +29,59 @@ class Encoder:
         instr.append("push", 1)                                #(r1 - r2, 1)
         instr.append("sub")                                    #(r1 - r2 - 1)
       case "read":
-        buffer_start = self.memory_stack_ptr-(200*8)
-        self.memory_stack_ptr-=(200*8)
-        self.memory_stack_ptr-=32
+        buffer_start = self.data_memory
+        self.data_memory += 200*32#buffer capacity - 200
         instr.append("push", buffer_start)                     #(buf_start)
-        instr.append("push", self.memory_stack_ptr)            #(buf_start, mem_addr)
+        cur_char_ptr = self.data_memory
+        self.data_memory += 32
+        instr.append("push", cur_char_ptr)                     #(buf_start, mem_addr)
         instr.append("ld")#saved buffer start                  #(buf_start, mem_addr) mem_addr is pointer to cur_char
         instr.append("pop")                                    #(buf_start)
         instr.append("pop")                                    #(),
-        instr.append("push", Faddr(instr.get_end() + 64))      #(loop_addr) address of next instruction
-        instr.append("in")                                     #(loop_addr, in)
-        instr.append("push", self.memory_stack_ptr)            #(loop_addr, in, mem_addr)
-        instr.append("mov")                                    #(loop_addr, in, cur_char)
-        instr.append("ld")#saved char to buf                   #(loop_addr, in, cur_char)
-        instr.append("pop")                                    #(loop_addr, in, cur_char)
-        instr.append("push", 8)                                #(loop_addr, in, cur_char, 0x08)
-        instr.append("sub")                                    #(loop_addr, in, cur_char - 8)
-        instr.append("push", self.memory_stack_ptr)            #(loop_addr, in, cur_char - 8, mem_addr)
-        instr.append("ld")                                     #(loop_addr, in, buf_start - 8, mem_addr)
-        instr.append("pop")                                    #(loop_addr, in, buf_start - 8)
-        instr.append("pop")                                    #(loop_addr, in)
-        instr.append("jz")                                     #(loop_addr) jz decrements tos
+        loop_start = Faddr(instr.get_end())
+        instr.append("in")                                     #(in)
+        instr.append("push", cur_char_ptr)                     #(in, mem_addr)
+        instr.append("mov")                                    #(in, cur_char)
+        instr.append("ld")#saved char to buf                   #(in, cur_char)
+        instr.append("push", 32)                               #(in, cur_char, 0x032)
+        instr.append("add")                                    #(in, cur_char + 32)
+        instr.append("push", cur_char_ptr)                     #(in, cur_char + 32, mem_addr)
+        instr.append("ld")                                     #(in, buf_start + 32, mem_addr)
+        instr.append("pop")                                    #(in, buf_start + 32)
+        instr.append("pop")                                    #(in)
+        instr.append("jz", loop_start)                         #() jz decrements tos
         instr.append("pop")                                    #()
         instr.append("push", buffer_start)                     #(buf_start)
       case "prints":
         instr.concat(self.recursive_encoding(node.params[0]))  #(str_start)
-        self.memory_stack_ptr -= 32
-        instr.append("push", self.memory_stack_ptr)            #(str_start, mem_addr)
+        cur_char_ptr = self.data_memory
+        instr.append("push", cur_char_ptr)                     #(str_start, mem_addr)
+        self.data_memory += 32
         instr.append("ld")#saved str_start to mem_addr         #(str_start, mem_addr)
         instr.append("pop")                                    #(str_start)
         instr.append("pop")                                    #()
-        instr.append("push", Faddr(instr.get_end() + 64))      #(loop_addr) address of next instruction
-        instr.append("push", self.memory_stack_ptr)            #(loop_addr,mem_addr)
-        instr.append("mov")                                    #(loop_addr,cur_str) pointer to current char
-        instr.append("mov")                                    #(loop_addr,char)
-        instr.append("out")                                    #(loop_addr,char)
-        instr.append("push", self.memory_stack_ptr)            #(loop_addr,char,mem_addr)
-        instr.append("mov")                                    #(loop_addr,char,cur_str)
-        instr.append("push", 8)                                #(loop_addr,char,cur_str,0x08)
-        instr.append("sub")                                    #(loop_addr,char,cur_str - 8)
-        instr.append("push", self.memory_stack_ptr)            #(loop_addr,char,cur_str-8,mem_addr)
-        instr.append("ld")                                     #(loop_addr,char,cur_str-8,mem_addr)
-        instr.append("pop")                                    #(loop_addr,char,cur_str-8)
-        instr.append("pop")                                    #(loop_addr,char)
-        instr.append("jz")                                     #(loop_addr)
+        loop_start = Faddr(instr.get_end())
+        instr.append("push", cur_char_ptr)                     #(mem_addr)
+        instr.append("mov")                                    #(cur_str) pointer to current char
+        instr.append("mov")                                    #(char)
+        instr.append("out")                                    #(char)
+        instr.append("push", cur_char_ptr)                     #(char,mem_addr)
+        instr.append("mov")                                    #(char,cur_str)
+        instr.append("push", 32)                               #(char,cur_str,0x032)
+        instr.append("add")                                    #(char,cur_str + 32)
+        instr.append("push", cur_char_ptr)                     #(char,cur_str+32,mem_addr)
+        instr.append("ld")                                     #(char,cur_str+32,mem_addr)
+        instr.append("pop")                                    #(char,cur_str+32)
+        instr.append("pop")                                    #(char)
+        instr.append("jz", loop_start)                         #()
         instr.append("pop")                                    #()
       case "printi":
-        instr.concat(self.recursive_encoding(node.params[0]))
-        instr.append("out") #first byte out
-        instr.append("rol") 
-        instr.append("out") #second byte out
-        instr.append("rol")
-        instr.append("out") #third byte out
-        instr.append("rol")
-        instr.append("out") #forth byte out
-        instr.append("pop") #()
+        instr.concat(self.recursive_encoding(node.params[0]))  #(r1)
+        instr.append("out")                                    #(r1)
+        instr.append("pop")                                    #()
       case "string":
         buffer_size = (len(node.params[0])+1)
-        buffer_start = self.memory_stack_ptr-(buffer_size*8)
-        self.memory_stack_ptr-=(buffer_size*8)
+        buffer_start = self.data_memory
         next_char_addr = buffer_start
         for c in (node.params[0]):
           instr.append("push", ord(c))                         #(char)
@@ -95,69 +89,57 @@ class Encoder:
           instr.append("ld")                                   #(char, mem_addr)
           instr.append("pop")                                  #(char)
           instr.append("pop")                                  #()
-          next_char_addr += 8
+          next_char_addr += 32
         instr.append("push", 0)                                #(null)
         instr.append("push", next_char_addr)                   #(null, mem_addr)
         instr.append("ld")                                     #(null, mem_addr)
         instr.append("pop")                                    #(null)
-        instr.append("pop")
-        instr.append("push", buffer_start)                                    #()
+        instr.append("pop")                                    #()
+        instr.append("push", buffer_start)                     #(str_start)
       case "setq":
         instr.concat(self.recursive_encoding(node.params[1]))  #(value)
-        self.memory_stack_ptr -= 32
-        instr.append("push", self.memory_stack_ptr)            #(value, addr)
+        var_addr = self.data_memory
+        instr.append("push", var_addr)                         #(value, addr)
+        self.data_memory += 32
         instr.append("ld")                                     #(value, addr)
         instr.append("pop")                                    #(value)
         instr.append("pop")                                    #()
-        self.variables[node.params[0].func_name] = self.memory_stack_ptr
+        self.variables[node.params[0].func_name] = var_addr
       case "if":
+        cond = self.recursive_encoding(node.params[0])
         is_true = self.recursive_encoding(node.params[1])
         is_false = self.recursive_encoding(node.params[2])
-        cond = self.recursive_encoding(node.params[0])
-        false_addr = instr.get_end() + 32 + cond.get_end() + 2*32 + is_true.get_end() + 2*32
-        #------------------------------^(push)---------------^(jns, pop)----------------^(push, jump)
-        end_addr = false_addr + 32 + is_false.get_end()
-        #-----------------------^(pop)----------------
-        instr.append("push", Faddr(false_addr))                  #(addr_false)
-        instr.concat(cond)                                     #(addr_false, cond)
-        instr.append("jns")                                   #(addr_false)
-        instr.append("pop")                                   #()
+        instr.concat(cond)                                     #(cond) s if cond==true
+        false_addr = instr.get_end() + 32 + is_true.get_end() + 32
+        endif_addr = instr.get_end() + 32 + is_true.get_end() + 32 + is_false.get_end()
+        instr.append("jns", Faddr(false_addr))                 #()
         instr.concat(is_true)                                  #(rt)
-        instr.append("push", Faddr(end_addr))                  #(rt,addr_end)
-        instr.append("jump")                                   #(rt)
-        instr.append("pop")                                   #()
+        instr.append("jump", Faddr(endif_addr))                #(rt)
         instr.concat(is_false)                                 #(rf)
       case "when":
-        is_true = self.recursive_encoding(node.params[1])
         cond = self.recursive_encoding(node.params[0])
-        false_addr = instr.get_end() + 32 + cond.get_end() + 2*32 + is_true.get_end() + 32
-        #------------------------------^(push)---------------^(jns, pop)----------------^(push 0)
-        instr.append("push", Faddr(false_addr))                  #(addr_false)
-        instr.concat(cond)                                     #(addr_false, cond)
-        instr.append("jns")                                   #(addr_false)
-        instr.append("pop")                                   #()
+        is_true = self.recursive_encoding(node.params[1])
+        instr.concat(cond)                                     #(cond)s if cond==true
+        endif_addr = instr.get_end() + 32 + is_true.get_end()
+        instr.append("jns", Faddr(endif_addr))                 #()
         instr.concat(is_true)                                  #(rt)
-        instr.append("push", 0)                               #(rt, 0)
-        instr.append("pop")                                   #(rt) or ()
       case "break":
-        instr.append("push", "unknown")                        #(end_of_loop)
-        instr.append("jump")                                   #()
+        instr.append("jump", "unknown")                        #()
       case "loop":
         for arg in node.params:
           instr.concat(self.recursive_encoding(arg))
-        instr.append("push", Faddr(0))#loop starts at 0        #(0)
-        instr.append("jump")                                   #()
-        break_addr = Faddr(instr.get_end())
+        instr.append("jump", Faddr(0))#loop starts at 0        #(0)
+        end_addr = Faddr(instr.get_end())
         for instruct in instr.instructions:
           if isinstance(instruct, list) and instruct[1] == "unknown":
-            instruct[1] = break_addr
+            instruct[1] = end_addr
       case _:
         if re.search(r'[a-zA-Z_]', node.func_name):
           assert node.func_name in self.variables.keys(), node.func_name + " not variable"
-          instr.append("push", self.variables[node.func_name])#(addr)
-          instr.append("mov")                                 #(value)
+          instr.append("push", self.variables[node.func_name]) #(addr)
+          instr.append("mov")                                  #(value)
         else:
-          instr.append("push", int(node.func_name))
+          instr.append("push", int(node.func_name))            #(const)
     return instr
   
   def make_code(self):
