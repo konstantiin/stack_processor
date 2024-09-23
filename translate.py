@@ -24,10 +24,10 @@ class Preprocessor:
 
     # mooore brackets for parsing convinience)
     def add_brackets(self, text) -> str:
-        pattern = r"([a-zA-Z0-9_<=\+\-]+)"
+        pattern = r"([a-zA-Z0-9_<=\+\-*]+)"
         text, _ = re.subn(pattern, r"(\1)", text)
         # remove double brackets
-        pattern = r'\(\(([a-zA-Z0-9_<=\+\-"]+)\)\)'
+        pattern = r'\(\(([a-zA-Z0-9_<=\+\-*"]+)\)\)'
         text, _ = re.subn(pattern, r"(\1)", text)
         return text
 
@@ -70,6 +70,7 @@ available_functions = {
     "<=": 2,
     "+": 2,
     "-": 2,
+    "*": 2
 }
 
 """
@@ -143,17 +144,6 @@ class Statement:
     def __init__(self):
         self.params = []
 
-    def print(self):
-        if len(self.params) == 0:
-            print(self.func_name, end=" ")
-            return
-        print(self.func_name + ":{", end="")
-        for i in self.params:
-            if isinstance(i, Statement):
-                i.print()
-            else:
-                print(i, end="")
-        print("}", end="")
 
 
 custom_funcs_params = {}
@@ -269,6 +259,10 @@ class Encoder:
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
                 instr.concat(self.recursive_encoding(node.params[1]))  #    (r1,r2)
                 instr.append(Instr.add)  #                                      (r1+r2)
+            case "*":
+                instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
+                instr.concat(self.recursive_encoding(node.params[1]))  #    (r1,r2)
+                instr.append(Instr.mul)  #                                      (r1*r2)
             case "-" | "<":
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
                 instr.concat(self.recursive_encoding(node.params[1]))  #    (r1,r2)
@@ -300,8 +294,9 @@ class Encoder:
                 instr.append(Instr.ld)  #                                       (in, buf_start + 32, mem_addr)
                 instr.append(Instr.pop)  #                                      (in, buf_start + 32)
                 instr.append(Instr.pop)  #                                      (in)
-                instr.append(Instr.jz, loop_start)  #                           () jz decrements tos
-                instr.append(Instr.pop)  #                                      ()
+                loop_end = Faddr(instr.get_end() + 64)
+                instr.append(Instr.jz, loop_end)  #                           () jz decrements tos
+                instr.append(Instr.jump, loop_start)
                 instr.append(Instr.push, buffer_start)  #                       (buf_start)
             case "prints":
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (str_start)

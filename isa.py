@@ -14,6 +14,7 @@ class Instr(IntEnum):
     jump = auto()
     add = auto()
     sub = auto()
+    mul = auto()
 
 
 class Opcode:

@@ -20,12 +20,13 @@ class Reader:
         with open(self.path, "rb") as f:
             byte = f.read(1)
             while byte != b"":
-                self.data.append(byte)
+                self.data.append(int.from_bytes(byte, "big"))
                 byte = f.read(1)
+        self.data.append(0)
 
     def receive(self):
-        b = self.bytes[0]
-        self.bytes = self.bytes[1:]
+        b = self.data[0]
+        self.data = self.data[1:]
         return b
 
 
@@ -40,11 +41,13 @@ class Tos(Enum):
 class Sp(Enum):
     INC = auto()
     DEC = auto()
+    MUL = auto()
 
 
 class Alu(Enum):
     PLUS = auto()
     MINUS = auto()
+    MUL = auto()
 
 
 class Ip(Enum):
@@ -83,6 +86,8 @@ class DataPath:
                 self.alu_res = self.stack[self.sp - 1] + self.tos
             case Alu.MINUS:
                 self.alu_res = self.stack[self.sp - 1] - self.tos
+            case Alu.MUL:
+                self.alu_res = self.stack[self.sp - 1] * self.tos
             case _:
                 raise ValueError
 
@@ -208,10 +213,10 @@ class ControlUnit:
                 self.data_path.out()
                 self.tick()
             case 6:  # in
-                self.data_path.sel_tos = Tos.IN
-                self.data_path.sel_sp = Sp.inc
+                self.data_path.sel_tos = Tos.INPUT
+                self.data_path.sel_sp = Sp.INC
                 self.data_path.inp()
-                self.data_path.sel_tos()
+                self.data_path.latch_tos()
                 self.data_path.latch_sp()
                 self.tick()
                 self.sel_ip = Ip.INC
@@ -263,6 +268,18 @@ class ControlUnit:
                 self.tick()
             case 11:  # sub
                 self.data_path.sel_alu = Alu.MINUS
+                self.data_path.sel_tos = Tos.ALU
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.alu()
+                self.data_path.latch_tos()
+                self.data_path.latch_sp()
+                self.tick()
+                self.sel_ip = Ip.INC
+                self.latch_ip()
+                self.data_path.latch_st()
+                self.tick()
+            case 12:  # mul
+                self.data_path.sel_alu = Alu.MUL
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC
                 self.data_path.alu()
