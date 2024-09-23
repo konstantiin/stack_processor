@@ -70,7 +70,7 @@ available_functions = {
     "<=": 2,
     "+": 2,
     "-": 2,
-    "*": 2
+    "*": 2,
 }
 
 """
@@ -143,7 +143,6 @@ class Statement:
 
     def __init__(self):
         self.params = []
-
 
 
 custom_funcs_params = {}
