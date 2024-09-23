@@ -80,7 +80,7 @@ in;           reads one byte to tos
 
 jns addr;     jumps to addr if tos >= 0
 jz addr;      jumps to addr if tos == 0
-jmp addr;     jumps to addr
+jump addr;     jumps to addr
 
 add;          tos-1 + tos -> tos
 sub;          tos-1 - tos -> tos
