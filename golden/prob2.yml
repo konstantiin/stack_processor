@@ -1,0 +1,23 @@
+in_source: |
+  (defun fib(x)
+     (setq fcur 8)
+     (setq fprev 2)
+     (setq sum 10)
+     (loop 
+       (setq fnew (* fcur 4))
+       (setq fnew (+ fnew fprev))
+       (setq fprev fcur)
+       (setq fcur fnew)
+       (when (< x fnew) (break))
+       (setq sum (+ sum fnew))
+       )
+      (sum))
+  (printi (fib 4000000))
+
+
+in_stdin: |
+  pass
+out_stdout: |-
+  224
+  ============================================================
+  [4613732]
