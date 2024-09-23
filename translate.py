@@ -176,7 +176,7 @@ class Inliner:
                 new_params = []
                 for var_name in statement.params[1]:
                     for s in statement.params[2:]:
-                        Inliner.replace_func_vars(s, var_name, statement.params[0] + "." + var_name)
+                        self.replace_func_vars(s, var_name, statement.params[0] + "." + var_name)
                     var = Statement()
                     var.func_name = statement.params[0] + "." + var_name
                     new_params.append(var)
@@ -207,7 +207,7 @@ class Inliner:
     def inline_and_delete_functions(self):
         self.process_defun_varnames()
         for s in self.root.params:
-            Inliner.inline_functions(s)
+            self.inline_functions(s)
         new_params = []
         for s in self.root.params:
             if s.func_name != "defun":
@@ -231,7 +231,7 @@ class Mnemcode:
         self.instructions = []
 
     def concat(self, other):
-        offset = len(self.instructions)
+        offset = len(self.instructions)*32
         for instruct in other.instructions:
             if isinstance(instruct, list) and isinstance(instruct[1], Faddr):
                 instruct[1] += offset
@@ -318,8 +318,9 @@ class Encoder:
                 instr.append(Instr.ld)  #                                       (char,cur_str+32,mem_addr)
                 instr.append(Instr.pop)  #                                      (char,cur_str+32)
                 instr.append(Instr.pop)  #                                      (char)
-                instr.append(Instr.jz, loop_start)  #                           ()
-                instr.append(Instr.pop)  #                                      ()
+                loop_end = Faddr(instr.get_end() + 64)
+                instr.append(Instr.jz, loop_end)  #                           ()
+                instr.append(Instr.jump, loop_start)#                         ()
             case "printi":
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
                 instr.append(Instr.out)  #                                      (r1)
@@ -340,6 +341,7 @@ class Encoder:
                 instr.append(Instr.pop)  #                                      (null)
                 instr.append(Instr.pop)  #                                      ()
                 instr.append(Instr.push, buffer_start)  #                       (str_start)
+                self.data_memory = next_char_addr + 32
             case "setq":
                 instr.concat(self.recursive_encoding(node.params[1]))  #    (value)
                 if node.params[0].func_name in self.variables.keys():
@@ -359,6 +361,7 @@ class Encoder:
                 instr.concat(cond)  #           s if cond==true             (cond)
                 false_addr = instr.get_end() + 32 + is_true.get_end() + 32
                 endif_addr = instr.get_end() + 32 + is_true.get_end() + 32 + is_false.get_end()
+                print(false_addr, endif_addr)
                 instr.append(Instr.jns, Faddr(false_addr))  #                   ()
                 instr.concat(is_true)  #                                    (rt)
                 instr.append(Instr.jump, Faddr(endif_addr))  #                  (rt)
@@ -368,6 +371,7 @@ class Encoder:
                 is_true = self.recursive_encoding(node.params[1])
                 instr.concat(cond)  #        s if cond==true                (cond)
                 endif_addr = instr.get_end() + 32 + is_true.get_end()
+                print(endif_addr)
                 instr.append(Instr.jns, Faddr(endif_addr))  #                   ()
                 instr.concat(is_true)  #                                    (rt)
             case "break":

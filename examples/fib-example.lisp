@@ -6,12 +6,12 @@
        (setq fprev fcur)
        (setq fcur fnew)
        (when (< x fnew) (break)))
-      (fnew))
+      (fprev))
 
 (defun tackle_negative(x)
     (if (<= x 0) 
         -1 
         (fib x)))
 
-(printi (tackle_negative (read)))
+(printi (tackle_negative (100)))
 # return is used to break loop (mb change to break)

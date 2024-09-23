@@ -2,25 +2,24 @@ import logging
 import sys
 from enum import Enum, auto
 
-from isa import read_code
+from isa import Instr, read_code
 
 
 class Writer:
-    def __init__(self, path) -> None:
-        self.path = path
+    def __init__(self) -> None:
+        self.buf = []
 
-    def send(self, bytes4):
-        with open(self.path, "wb") as f:
-            f.write(bytes4.to_bytes(4, "big"))
+    def send(self, val):
+        self.buf.append(val)
 
 class Reader:
     def __init__(self, path) -> None:
         self.path = path
-        self.bytes = []
-        with open("myfile", "rb") as f:
+        self.data = []
+        with open(self.path, "rb") as f:
             byte = f.read(1)
-            while bytes != b"":
-                self.bytes.append(byte)
+            while byte != b"":
+                self.data.append(byte)
                 byte = f.read(1)
 
     def receive(self):
@@ -83,14 +82,14 @@ class DataPath:
             case _:
                 raise ValueError
     def latch_st(self):
-        self.stack[self.sp+1] = self.tos
+        self.stack[self.sp] = self.tos
 
     def latch_tos(self):
         match self.sel_tos:
             case Tos.STACK:
                 self.tos = self.stack[self.sp]
             case Tos.ALU:
-                self.tos = self.alu
+                self.tos = self.alu_res
             case Tos.DATA:
                 self.tos = self.mem_read
             case Tos.INPUT:
@@ -116,119 +115,127 @@ class DataPath:
 
 class ControlUnit:
     def __init__(self, program, writer, reader):
-        self.data_memory = program
         self.ip = 0
         self.sel_ip = "inc"
         self.addr = 0
-        self.machine = DataPath(writer, reader)
-        self.tick = 0
+        self.data_path = DataPath(writer, reader)
+        self._tick = 0
+        self.instr_memory = {}
+        addr = 0
         for i, instr in enumerate(program):
-            self.data_memory[i] = instr
-
+            self.instr_memory[i*32] = instr
+            addr = i
+        addr+=1
+        self.instr_memory[addr*32] = 0
     def latch_ip(self):
         match self.sel_ip:
             case Ip.INC:
-                self.ip+=1
+                self.ip+=32
             case Ip.ADDR:
-                self.ip = self.s
+                self.ip = self.addr
             case _:
                 raise ValueError
-    def tick(self, signals):
-        self.tick += 1
-    
+    def tick(self):
+        self._tick += 1
+
     def __repr__(self):
         """Вернуть строковое представление состояния процессора."""
-        state_repr = "TICK: {:3d} IP: {:3d} NEXT_INSTR: {:3d} TOS: {:3d} SP: {:3d}".format(
-            self.tick,
+        i = Instr((self.instr_memory[self.ip] & (15 << 28)) >> 28).name
+        return "TICK: {:3d} IP: {:3d} TOS: {:3d} STACK[SP]: {:3d} STACK[SP-1]: {:3d} SP: {:3d} INSTR: {:5s} ARG: {:3d}".format(
+            self._tick,
             self.ip,
-            self.data_memory[self.ip],
-            self.machine.tos,
-            self.data_path.data_memory[self.data_path.data_address],
-            self.data_path.acc,
-        )
-
-        instr = self.program[self.program_counter]
-        opcode = instr["opcode"]
-        instr_repr = str(opcode)
-
-        if "arg" in instr:
-            instr_repr += " {}".format(instr["arg"])
-
-        if "term" in instr:
-            term = instr["term"]
-            instr_repr += "  ('{}'@{}:{})".format(term.symbol, term.line, term.pos)
-
-        return "{} \t{}".format(state_repr, instr_repr)
+            self.data_path.tos,
+            self.data_path.stack[self.data_path.sp],
+            self.data_path.stack[self.data_path.sp -1],
+            self.data_path.sp,
+            str(i),
+            self.instr_memory[self.ip] & ((1<<28)-1)
+            )
 
     def decode(self):
-        arg = self.data_memory[self.ip] & ((1<<28)-1)
-        instr = self.data_memory[self.ip] & (15 << 28)
+        arg = self.instr_memory[self.ip] & ((1<<28)-1)
+        instr = (self.instr_memory[self.ip] & (15 << 28)) >> 28
+        logging.debug("%s", self)
         match instr:
             case 0: #hlt
                 return False
             case 1: #push
-                self.machine.instr_arg = arg
-                self.machine.sel_tos = Tos.CONTROL
-                self.machine.sel_sp = Sp.INC
-                self.machine.latch_tos()
-                self.machine.latch_sp()
+                self.data_path.instr_arg = arg
+                self.data_path.sel_tos = Tos.CONTROL
+                self.data_path.sel_sp = Sp.INC
+                self.data_path.latch_tos()
+                self.data_path.latch_sp()
                 self.tick()
                 self.sel_ip = Ip.INC
-                self.machine.latch_st()
+                self.data_path.latch_st()
                 self.latch_ip()
                 self.tick()
             case 2: #pop
-                self.machine.sel_sp = Sp.DEC
-                self.machine.latch_sp()
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.latch_sp()
                 self.tick()
-                self.machine.sel_tos = Tos.STACK
+                self.data_path.sel_tos = Tos.STACK
                 self.sel_ip = Ip.INC
-                self.machine.latch_tos()
+                self.data_path.latch_tos()
                 self.latch_ip()
                 self.tick()
             case 3: #mov
-                self.machine.sel_tos = Tos.DATA
-                self.machine.read_mem()
-                self.machine.latch_tos()
+                self.data_path.sel_tos = Tos.DATA
+                self.data_path.read_mem()
+                self.data_path.latch_tos()
                 self.tick()
+                self.data_path.latch_st()
                 self.sel_ip = Ip.INC
                 self.latch_ip()
                 self.tick()
             case 4: #ld
+                self.data_path.wrtite_mem()
+                self.data_path.sel_sp = Sp.DEC
+                self.tick()
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.machine.wrtite_mem()
-                self.tick()
+                self.data_path.sel_tos = Tos.STACK
+                self.data_path.latch_tos()
             case 5: #out
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.machine.out()
+                self.data_path.out()
                 self.tick()
             case 6: #in
-                self.machine.sel_tos = Tos.IN
-                self.machine.sel_sp = Sp.inc
-                self.machine.inp()
-                self.machine.sel_tos()
-                self.machine.latch_sp()
+                self.data_path.sel_tos = Tos.IN
+                self.data_path.sel_sp = Sp.inc
+                self.data_path.inp()
+                self.data_path.sel_tos()
+                self.data_path.latch_sp()
                 self.tick()
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.machine.latch_st()
+                self.data_path.latch_st()
                 self.tick()
             case 7: #jns
                 ip = Ip.INC
-                if self.machine.tos >= 0:
+                if self.data_path.tos >= 0:
                     ip = Ip.ADDR
                 self.addr = arg
-                self.sel_ip = ip
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.latch_sp()
+                self.tick()
+                self.data_path.sel_tos = Tos.STACK
+                self.data_path.latch_tos()
+                self.sel_ip= ip
                 self.latch_ip()
                 self.tick()
             case 8: #jz
                 ip = Ip.INC
-                if self.machine.tos == 0:
+                if self.data_path.tos == 0:
                     ip = Ip.ADDR
                 self.addr = arg
-                self.sel_ip = ip
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.latch_sp()
+                self.tick()
+                self.data_path.sel_tos = Tos.STACK
+                self.data_path.latch_tos()
+                self.sel_ip= ip
                 self.latch_ip()
                 self.tick()
             case 9: #jump
@@ -237,48 +244,48 @@ class ControlUnit:
                 self.latch_ip()
                 self.tick()
             case 10: #add
-                self.machine.sel_alu = Alu.PLUS
-                self.sel_tos = Tos.Alu
-                self.machine.sel_sp = Sp.DEC
-                self.machine.latch_tos()
-                self.machine.alu()
+                self.data_path.sel_alu = Alu.PLUS
+                self.data_path.sel_tos = Tos.ALU
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.alu()
+                self.data_path.latch_tos()
+                self.data_path.latch_sp()
                 self.tick()
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.machine.latch_st()
+                self.data_path.latch_st()
                 self.tick()
             case 11: #sub
-                self.machine.sel_alu = Alu.MINUS
-                self.sel_tos = Tos.Alu
-                self.machine.sel_sp = Sp.DEC
-                self.machine.latch_tos()
-                self.machine.alu()
+                self.data_path.sel_alu = Alu.MINUS
+                self.data_path.sel_tos = Tos.ALU
+                self.data_path.sel_sp = Sp.DEC
+                self.data_path.alu()
+                self.data_path.latch_tos()
+                self.data_path.latch_sp()
                 self.tick()
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.machine.latch_st()
+                self.data_path.latch_st()
                 self.tick()
             case _:
-                raise ValueError
+                logging.error("Wrong instruction")
+                return False
         return True
     def emulate(self):
         should_continue = True
+        logging.debug("%s", "started emeulation")
         while(should_continue):
-            try:
-                should_continue = self.decode()
-            except ValueError:
-                #log.error
-                return
-            self.log()
+            should_continue = self.decode()
 
 
-def main(program):
+def main(program, input_stream):
     instructions = read_code(program)
-    model = ControlUnit(instructions, Writer("iostreams/in"), Reader("iostreams/out"))
+    model = ControlUnit(instructions, Writer(), Reader(input_stream))
     model.emulate()
+    print(model.data_path.writer.buf, end = "")
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
-    assert len(sys.argv) == 3, "Wrong arguments: machine.py <code_file>"
-    _, program = sys.argv
-    main(program)
+    assert len(sys.argv) == 3, "Wrong arguments: machine.py <code_file> <input_stream>"
+    _, program, input_stream = sys.argv
+    main(program, input_stream)

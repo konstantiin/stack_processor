@@ -34,6 +34,6 @@ def read_code(path):
     with open(path, "rb") as f:
         bytes4 = f.read(4)
         while bytes4 != b"":
-            instructions.append(bytes4)
+            instructions.append(int.from_bytes(bytes4, "big"))
             bytes4 = f.read(4)
     return instructions
