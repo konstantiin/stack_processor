@@ -100,7 +100,7 @@ sub;          tos-1 - tos -> tos
 
 ### DataPath
 
-![alt text](data-path.svg "DataPath")
+![alt text](scheme/data-path.svg "DataPath")
 
 Регистры:
 - `STACK` -- стековые регистры  
@@ -123,7 +123,7 @@ sub;          tos-1 - tos -> tos
 
 
 ## Control Unit
-  ![alt text](control-unit.svg "DataPath")
+  ![alt text](scheme/control-unit.svg "DataPath")
 Регистры:
 - `IP` -- стековые регистры  
 - `SC` -- step counter хранит номер такта

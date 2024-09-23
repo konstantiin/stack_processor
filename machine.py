@@ -1,3 +1,4 @@
+import logging
 import sys
 from enum import Enum, auto
 
@@ -121,6 +122,8 @@ class ControlUnit:
         self.addr = 0
         self.machine = DataPath(writer, reader)
         self.tick = 0
+        for i, instr in enumerate(program):
+            self.data_memory[i] = instr
 
     def latch_ip(self):
         match self.sel_ip:
@@ -132,6 +135,30 @@ class ControlUnit:
                 raise ValueError
     def tick(self, signals):
         self.tick += 1
+    
+    def __repr__(self):
+        """Вернуть строковое представление состояния процессора."""
+        state_repr = "TICK: {:3d} IP: {:3d} NEXT_INSTR: {:3d} TOS: {:3d} SP: {:3d}".format(
+            self.tick,
+            self.ip,
+            self.data_memory[self.ip],
+            self.machine.tos,
+            self.data_path.data_memory[self.data_path.data_address],
+            self.data_path.acc,
+        )
+
+        instr = self.program[self.program_counter]
+        opcode = instr["opcode"]
+        instr_repr = str(opcode)
+
+        if "arg" in instr:
+            instr_repr += " {}".format(instr["arg"])
+
+        if "term" in instr:
+            term = instr["term"]
+            instr_repr += "  ('{}'@{}:{})".format(term.symbol, term.line, term.pos)
+
+        return "{} \t{}".format(state_repr, instr_repr)
 
     def decode(self):
         arg = self.data_memory[self.ip] & ((1<<28)-1)
@@ -251,6 +278,7 @@ def main(program):
     model.emulate()
 
 if __name__ == "__main__":
+    logging.getLogger().setLevel(logging.DEBUG)
     assert len(sys.argv) == 3, "Wrong arguments: machine.py <code_file>"
     _, program = sys.argv
     main(program)
