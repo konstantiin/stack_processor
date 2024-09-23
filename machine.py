@@ -12,6 +12,7 @@ class Writer:
     def send(self, val):
         self.buf.append(val)
 
+
 class Reader:
     def __init__(self, path) -> None:
         self.path = path
@@ -35,22 +36,26 @@ class Tos(Enum):
     INPUT = auto()
     CONTROL = auto()
 
+
 class Sp(Enum):
     INC = auto()
     DEC = auto()
+
 
 class Alu(Enum):
     PLUS = auto()
     MINUS = auto()
 
+
 class Ip(Enum):
     INC = auto()
     ADDR = auto()
 
+
 class DataPath:
     def __init__(self, writer, reader):
         self.sp = 0
-        self.stack = [0]*50
+        self.stack = [0] * 50
         self.tos = 0
         self.alu_res = 0
         self.mem_read = 0
@@ -72,15 +77,15 @@ class DataPath:
             case _:
                 raise ValueError
 
-
     def alu(self):
         match self.sel_alu:
             case Alu.PLUS:
-                self.alu_res = self.stack[self.sp-1] + self.tos
+                self.alu_res = self.stack[self.sp - 1] + self.tos
             case Alu.MINUS:
-                self.alu_res = self.stack[self.sp-1] - self.tos
+                self.alu_res = self.stack[self.sp - 1] - self.tos
             case _:
                 raise ValueError
+
     def latch_st(self):
         self.stack[self.sp] = self.tos
 
@@ -99,12 +104,11 @@ class DataPath:
             case _:
                 raise ValueError
 
-
     def read_mem(self):
         self.mem_read = self.data_memory[self.tos]
 
     def wrtite_mem(self):
-        self.data_memory[self.tos] = self.stack[self.sp-1]
+        self.data_memory[self.tos] = self.stack[self.sp - 1]
 
     def inp(self):
         self.input = self.reader.receive()
@@ -123,18 +127,20 @@ class ControlUnit:
         self.instr_memory = {}
         addr = 0
         for i, instr in enumerate(program):
-            self.instr_memory[i*32] = instr
+            self.instr_memory[i * 32] = instr
             addr = i
-        addr+=1
-        self.instr_memory[addr*32] = 0
+        addr += 1
+        self.instr_memory[addr * 32] = 0
+
     def latch_ip(self):
         match self.sel_ip:
             case Ip.INC:
-                self.ip+=32
+                self.ip += 32
             case Ip.ADDR:
                 self.ip = self.addr
             case _:
                 raise ValueError
+
     def tick(self):
         self._tick += 1
 
@@ -146,20 +152,20 @@ class ControlUnit:
             self.ip,
             self.data_path.tos,
             self.data_path.stack[self.data_path.sp],
-            self.data_path.stack[self.data_path.sp -1],
+            self.data_path.stack[self.data_path.sp - 1],
             self.data_path.sp,
             str(i),
-            self.instr_memory[self.ip] & ((1<<28)-1)
-            )
+            self.instr_memory[self.ip] & ((1 << 28) - 1),
+        )
 
     def decode(self):
-        arg = self.instr_memory[self.ip] & ((1<<28)-1)
+        arg = self.instr_memory[self.ip] & ((1 << 28) - 1)
         instr = (self.instr_memory[self.ip] & (15 << 28)) >> 28
         logging.debug("%s", self)
         match instr:
-            case 0: #hlt
+            case 0:  # hlt
                 return False
-            case 1: #push
+            case 1:  # push
                 self.data_path.instr_arg = arg
                 self.data_path.sel_tos = Tos.CONTROL
                 self.data_path.sel_sp = Sp.INC
@@ -170,7 +176,7 @@ class ControlUnit:
                 self.data_path.latch_st()
                 self.latch_ip()
                 self.tick()
-            case 2: #pop
+            case 2:  # pop
                 self.data_path.sel_sp = Sp.DEC
                 self.data_path.latch_sp()
                 self.tick()
@@ -179,7 +185,7 @@ class ControlUnit:
                 self.data_path.latch_tos()
                 self.latch_ip()
                 self.tick()
-            case 3: #mov
+            case 3:  # mov
                 self.data_path.sel_tos = Tos.DATA
                 self.data_path.read_mem()
                 self.data_path.latch_tos()
@@ -188,7 +194,7 @@ class ControlUnit:
                 self.sel_ip = Ip.INC
                 self.latch_ip()
                 self.tick()
-            case 4: #ld
+            case 4:  # ld
                 self.data_path.wrtite_mem()
                 self.data_path.sel_sp = Sp.DEC
                 self.tick()
@@ -196,12 +202,12 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.sel_tos = Tos.STACK
                 self.data_path.latch_tos()
-            case 5: #out
+            case 5:  # out
                 self.sel_ip = Ip.INC
                 self.latch_ip()
                 self.data_path.out()
                 self.tick()
-            case 6: #in
+            case 6:  # in
                 self.data_path.sel_tos = Tos.IN
                 self.data_path.sel_sp = Sp.inc
                 self.data_path.inp()
@@ -212,7 +218,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.latch_st()
                 self.tick()
-            case 7: #jns
+            case 7:  # jns
                 ip = Ip.INC
                 if self.data_path.tos >= 0:
                     ip = Ip.ADDR
@@ -222,10 +228,10 @@ class ControlUnit:
                 self.tick()
                 self.data_path.sel_tos = Tos.STACK
                 self.data_path.latch_tos()
-                self.sel_ip= ip
+                self.sel_ip = ip
                 self.latch_ip()
                 self.tick()
-            case 8: #jz
+            case 8:  # jz
                 ip = Ip.INC
                 if self.data_path.tos == 0:
                     ip = Ip.ADDR
@@ -235,15 +241,15 @@ class ControlUnit:
                 self.tick()
                 self.data_path.sel_tos = Tos.STACK
                 self.data_path.latch_tos()
-                self.sel_ip= ip
+                self.sel_ip = ip
                 self.latch_ip()
                 self.tick()
-            case 9: #jump
+            case 9:  # jump
                 self.sel_ip = Ip.ADDR
                 self.addr = arg
                 self.latch_ip()
                 self.tick()
-            case 10: #add
+            case 10:  # add
                 self.data_path.sel_alu = Alu.PLUS
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC
@@ -255,7 +261,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.latch_st()
                 self.tick()
-            case 11: #sub
+            case 11:  # sub
                 self.data_path.sel_alu = Alu.MINUS
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC
@@ -271,10 +277,11 @@ class ControlUnit:
                 logging.error("Wrong instruction")
                 return False
         return True
+
     def emulate(self):
         should_continue = True
         logging.debug("%s", "started emeulation")
-        while(should_continue):
+        while should_continue:
             should_continue = self.decode()
 
 
@@ -282,7 +289,8 @@ def main(program, input_stream):
     instructions = read_code(program)
     model = ControlUnit(instructions, Writer(), Reader(input_stream))
     model.emulate()
-    print(model.data_path.writer.buf, end = "")
+    print(model.data_path.writer.buf, end="")
+
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)

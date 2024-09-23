@@ -32,5 +32,4 @@ def test_translator_lisp_and_machine(golden, caplog):
             print("============================================================")
             machine.main(target, input_stream)
 
-
         assert stdout.getvalue() == golden.out["out_stdout"]

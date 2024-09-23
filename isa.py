@@ -14,8 +14,9 @@ class Instr(IntEnum):
     jump = auto()
     add = auto()
     sub = auto()
-class Opcode:
 
+
+class Opcode:
     def __init__(self, mnemonics):
         self.binary = []
         for instr in mnemonics:
@@ -28,6 +29,7 @@ class Opcode:
         with open(path, "wb") as f:
             for i in self.binary:
                 f.write(i.to_bytes(4, "big"))
+
 
 def read_code(path):
     instructions = []

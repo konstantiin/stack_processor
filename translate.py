@@ -8,7 +8,6 @@ class Preprocessor:
     def __init__(self, text) -> None:
         self.text = text
 
-
     def check_brackets(self) -> str:
         balance = 0
         for c in self.text:
@@ -50,6 +49,8 @@ class Preprocessor:
                 new_text.append('("' + txt + '")')
         self.text = "".join(new_text)
         return self
+
+
 """
 everything is a function))
 """
@@ -74,6 +75,7 @@ available_functions = {
 """
 variables and constants are treated like functions with 0 args
 """
+
 
 class Statement:
     def split_by_brackets(self, text):
@@ -153,6 +155,7 @@ class Statement:
                 print(i, end="")
         print("}", end="")
 
+
 custom_funcs_params = {}
 custom_funcs_bodies = {}
 
@@ -215,6 +218,7 @@ class Inliner:
         self.root.params = new_params
         return self
 
+
 class Faddr:
     def __init__(self, a):
         self.addr = a
@@ -225,13 +229,15 @@ class Faddr:
 
     def __str__(self):
         return str(self.addr)
+
+
 class Mnemcode:
     def __init__(self, addr_start):
         self.addr_start = addr_start
         self.instructions = []
 
     def concat(self, other):
-        offset = len(self.instructions)*32
+        offset = len(self.instructions) * 32
         for instruct in other.instructions:
             if isinstance(instruct, list) and isinstance(instruct[1], Faddr):
                 instruct[1] += offset
@@ -320,7 +326,7 @@ class Encoder:
                 instr.append(Instr.pop)  #                                      (char)
                 loop_end = Faddr(instr.get_end() + 64)
                 instr.append(Instr.jz, loop_end)  #                           ()
-                instr.append(Instr.jump, loop_start)#                         ()
+                instr.append(Instr.jump, loop_start)  #                         ()
             case "printi":
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
                 instr.append(Instr.out)  #                                      (r1)
@@ -400,12 +406,13 @@ class Encoder:
                 instr[1] = instr[1].addr
         return code
 
+
 def translate(text):
     preprocessor = Preprocessor(text).preprocess()
     root = Statement().build_from_text(preprocessor.text)
-    inliner = Inliner(root).inline_and_delete_functions() # recursion is not supported))
+    inliner = Inliner(root).inline_and_delete_functions()  # recursion is not supported))
     encoder = Encoder(inliner.root)
-    code = encoder.make_code() # mnemonic code
+    code = encoder.make_code()  # mnemonic code
     return Opcode(code.instructions)
 
 
@@ -415,6 +422,7 @@ def main(source, target):
 
     code = translate(source)
     code.save_code(target)
+
 
 if __name__ == "__main__":
     assert len(sys.argv) == 3, "Wrong arguments: translate.py <input_file> <target_file>"
