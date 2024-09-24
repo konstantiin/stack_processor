@@ -309,7 +309,7 @@ class Encoder:
                 instr.append(Instr.push, cur_char_ptr)  #                       (mem_addr)
                 instr.append(Instr.mov)  # pointer to current char              (cur_str)
                 instr.append(Instr.mov)  #                                      (char)
-                instr.append(Instr.out)  #                                      (char)
+                instr.append(Instr.outc)  #                                      (char)
                 instr.append(Instr.push, cur_char_ptr)  #                       (char,mem_addr)
                 instr.append(Instr.mov)  #                                      (char,cur_str)
                 instr.append(Instr.push, 32)  #                                 (char,cur_str,0x032)
@@ -323,7 +323,7 @@ class Encoder:
                 instr.append(Instr.jump, loop_start)  #                         ()
             case "printi":
                 instr.concat(self.recursive_encoding(node.params[0]))  #    (r1)
-                instr.append(Instr.out)  #                                      (r1)
+                instr.append(Instr.outi)  #                                      (r1)
                 instr.append(Instr.pop)  #                                      ()
             case "string":
                 buffer_start = self.data_memory
@@ -361,7 +361,6 @@ class Encoder:
                 instr.concat(cond)  #           s if cond==true             (cond)
                 false_addr = instr.get_end() + 32 + is_true.get_end() + 32
                 endif_addr = instr.get_end() + 32 + is_true.get_end() + 32 + is_false.get_end()
-                print(false_addr, endif_addr)
                 instr.append(Instr.jns, Faddr(false_addr))  #                   ()
                 instr.concat(is_true)  #                                    (rt)
                 instr.append(Instr.jump, Faddr(endif_addr))  #                  (rt)
@@ -371,7 +370,6 @@ class Encoder:
                 is_true = self.recursive_encoding(node.params[1])
                 instr.concat(cond)  #        s if cond==true                (cond)
                 endif_addr = instr.get_end() + 32 + is_true.get_end()
-                print(endif_addr)
                 instr.append(Instr.jns, Faddr(endif_addr))  #                   ()
                 instr.concat(is_true)  #                                    (rt)
             case "break":
@@ -407,6 +405,7 @@ def translate(text):
     inliner = Inliner(root).inline_and_delete_functions()  # recursion is not supported))
     encoder = Encoder(inliner.root)
     code = encoder.make_code()  # mnemonic code
+
     return Opcode(code.instructions)
 
 

@@ -1,9 +1,353 @@
 in_source: |
   (prints read)
 
-
 in_stdin: |
   pass123
-out_stdout: |-
+out_stdout: |
   ============================================================
-  [0]
+  pass123
+out_log: |
+  DEBUG   machine:emulate       started emeulation
+  DEBUG   machine:decode        TICK:   0 IP:     0 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:         0
+  DEBUG   machine:decode        TICK:   2 IP:    32 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:   4 IP:    64 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:         0 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:   5 IP:    96 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:         0 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:   7 IP:   128 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:   9 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK:  11 IP:   192 TOS:       112 STACK[SP]:       112 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  13 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       112 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK:  15 IP:   256 TOS:         0 STACK[SP]:         0 STACK[SP-1]:       112 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  16 IP:   288 TOS:         0 STACK[SP]:         0 STACK[SP-1]:       112 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK:  18 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:         0 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK:  20 IP:   352 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       112 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  22 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        32 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  23 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        32 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  25 IP:   448 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       112 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  27 IP:   480 TOS:       112 STACK[SP]:       112 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK:  29 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK:  30 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK:  32 IP:   192 TOS:        97 STACK[SP]:        97 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  34 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        97 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK:  36 IP:   256 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        97 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  37 IP:   288 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        97 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK:  39 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        32 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK:  41 IP:   352 TOS:        64 STACK[SP]:        64 STACK[SP-1]:        97 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  43 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        64 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  44 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        64 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  46 IP:   448 TOS:        64 STACK[SP]:        64 STACK[SP-1]:        97 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  48 IP:   480 TOS:        97 STACK[SP]:        97 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK:  50 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK:  51 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK:  53 IP:   192 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  55 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       115 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK:  57 IP:   256 TOS:        64 STACK[SP]:        64 STACK[SP-1]:       115 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  58 IP:   288 TOS:        64 STACK[SP]:        64 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK:  60 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        64 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK:  62 IP:   352 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  64 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        96 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  65 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        96 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  67 IP:   448 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  69 IP:   480 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK:  71 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK:  72 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK:  74 IP:   192 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  76 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       115 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK:  78 IP:   256 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  79 IP:   288 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK:  81 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        96 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK:  83 IP:   352 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  85 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       128 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK:  86 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       128 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  88 IP:   448 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       115 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK:  90 IP:   480 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK:  92 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK:  93 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK:  95 IP:   192 TOS:        49 STACK[SP]:        49 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK:  97 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        49 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK:  99 IP:   256 TOS:       128 STACK[SP]:       128 STACK[SP-1]:        49 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 100 IP:   288 TOS:       128 STACK[SP]:       128 STACK[SP-1]:        49 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 102 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       128 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 104 IP:   352 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        49 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 106 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       160 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 107 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       160 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 109 IP:   448 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        49 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 111 IP:   480 TOS:        49 STACK[SP]:        49 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 113 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK: 114 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK: 116 IP:   192 TOS:        50 STACK[SP]:        50 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 118 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        50 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 120 IP:   256 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        50 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 121 IP:   288 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        50 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 123 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       160 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 125 IP:   352 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        50 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 127 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       192 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 128 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       192 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 130 IP:   448 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        50 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 132 IP:   480 TOS:        50 STACK[SP]:        50 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 134 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK: 135 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK: 137 IP:   192 TOS:        51 STACK[SP]:        51 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 139 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        51 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 141 IP:   256 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        51 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 142 IP:   288 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        51 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 144 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       192 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 146 IP:   352 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        51 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 148 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       224 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 149 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       224 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 151 IP:   448 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        51 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 153 IP:   480 TOS:        51 STACK[SP]:        51 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 155 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK: 156 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK: 158 IP:   192 TOS:        13 STACK[SP]:        13 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 160 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        13 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 162 IP:   256 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        13 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 163 IP:   288 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        13 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 165 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       224 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 167 IP:   352 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        13 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 169 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       256 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 170 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       256 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 172 IP:   448 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        13 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 174 IP:   480 TOS:        13 STACK[SP]:        13 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 176 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK: 177 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK: 179 IP:   192 TOS:        10 STACK[SP]:        10 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 181 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:        10 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 183 IP:   256 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        10 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 184 IP:   288 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        10 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 186 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       256 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 188 IP:   352 TOS:       288 STACK[SP]:       288 STACK[SP-1]:        10 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 190 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       288 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 191 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       288 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 193 IP:   448 TOS:       288 STACK[SP]:       288 STACK[SP-1]:        10 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 195 IP:   480 TOS:        10 STACK[SP]:        10 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 197 IP:   512 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       160
+  DEBUG   machine:decode        TICK: 198 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: inp   ARG:         0
+  DEBUG   machine:decode        TICK: 200 IP:   192 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 202 IP:   224 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:         0 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 204 IP:   256 TOS:       288 STACK[SP]:       288 STACK[SP-1]:         0 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 205 IP:   288 TOS:       288 STACK[SP]:       288 STACK[SP-1]:         0 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 207 IP:   320 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       288 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 209 IP:   352 TOS:       320 STACK[SP]:       320 STACK[SP-1]:         0 SP:   2 INSTR: push  ARG:      6400
+  DEBUG   machine:decode        TICK: 211 IP:   384 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       320 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 212 IP:   416 TOS:      6400 STACK[SP]:      6400 STACK[SP-1]:       320 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 214 IP:   448 TOS:       320 STACK[SP]:       320 STACK[SP-1]:         0 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 216 IP:   480 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:       544
+  DEBUG   machine:decode        TICK: 218 IP:   544 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:         0
+  DEBUG   machine:decode        TICK: 220 IP:   576 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 222 IP:   608 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   2 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 223 IP:   640 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 225 IP:   672 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 227 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 229 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 231 IP:   768 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 233 IP:   800 TOS:       112 STACK[SP]:       112 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 234 IP:   832 TOS:       112 STACK[SP]:       112 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 236 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       112 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 238 IP:   896 TOS:         0 STACK[SP]:         0 STACK[SP-1]:       112 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 240 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:         0 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 242 IP:   960 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       112 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 244 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        32 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 245 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        32 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 247 IP:  1056 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       112 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 249 IP:  1088 TOS:       112 STACK[SP]:       112 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 251 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 252 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 254 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 256 IP:   768 TOS:        32 STACK[SP]:        32 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 258 IP:   800 TOS:        97 STACK[SP]:        97 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 259 IP:   832 TOS:        97 STACK[SP]:        97 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 261 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        97 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 263 IP:   896 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        97 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 265 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        32 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 267 IP:   960 TOS:        64 STACK[SP]:        64 STACK[SP-1]:        97 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 269 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        64 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 270 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        64 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 272 IP:  1056 TOS:        64 STACK[SP]:        64 STACK[SP-1]:        97 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 274 IP:  1088 TOS:        97 STACK[SP]:        97 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 276 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 277 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 279 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 281 IP:   768 TOS:        64 STACK[SP]:        64 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 283 IP:   800 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 284 IP:   832 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 286 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       115 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 288 IP:   896 TOS:        64 STACK[SP]:        64 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 290 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        64 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 292 IP:   960 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 294 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        96 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 295 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        96 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 297 IP:  1056 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 299 IP:  1088 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 301 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 302 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 304 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 306 IP:   768 TOS:        96 STACK[SP]:        96 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 308 IP:   800 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 309 IP:   832 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 311 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       115 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 313 IP:   896 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 315 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:        96 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 317 IP:   960 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       115 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 319 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       128 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 320 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       128 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 322 IP:  1056 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       115 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 324 IP:  1088 TOS:       115 STACK[SP]:       115 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 326 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 327 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 329 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 331 IP:   768 TOS:       128 STACK[SP]:       128 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 333 IP:   800 TOS:        49 STACK[SP]:        49 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 334 IP:   832 TOS:        49 STACK[SP]:        49 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 336 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        49 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 338 IP:   896 TOS:       128 STACK[SP]:       128 STACK[SP-1]:        49 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 340 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       128 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 342 IP:   960 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        49 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 344 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       160 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 345 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       160 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 347 IP:  1056 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        49 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 349 IP:  1088 TOS:        49 STACK[SP]:        49 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 351 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 352 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 354 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 356 IP:   768 TOS:       160 STACK[SP]:       160 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 358 IP:   800 TOS:        50 STACK[SP]:        50 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 359 IP:   832 TOS:        50 STACK[SP]:        50 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 361 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        50 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 363 IP:   896 TOS:       160 STACK[SP]:       160 STACK[SP-1]:        50 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 365 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       160 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 367 IP:   960 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        50 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 369 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       192 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 370 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       192 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 372 IP:  1056 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        50 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 374 IP:  1088 TOS:        50 STACK[SP]:        50 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 376 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 377 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 379 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 381 IP:   768 TOS:       192 STACK[SP]:       192 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 383 IP:   800 TOS:        51 STACK[SP]:        51 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 384 IP:   832 TOS:        51 STACK[SP]:        51 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 386 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        51 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 388 IP:   896 TOS:       192 STACK[SP]:       192 STACK[SP-1]:        51 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 390 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       192 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 392 IP:   960 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        51 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 394 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       224 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 395 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       224 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 397 IP:  1056 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        51 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 399 IP:  1088 TOS:        51 STACK[SP]:        51 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 401 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 402 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 404 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 406 IP:   768 TOS:       224 STACK[SP]:       224 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 408 IP:   800 TOS:        13 STACK[SP]:        13 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 409 IP:   832 TOS:        13 STACK[SP]:        13 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 411 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        13 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 413 IP:   896 TOS:       224 STACK[SP]:       224 STACK[SP-1]:        13 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 415 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       224 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 417 IP:   960 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        13 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 419 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       256 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 420 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       256 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 422 IP:  1056 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        13 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 424 IP:  1088 TOS:        13 STACK[SP]:        13 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 426 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 427 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 429 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 431 IP:   768 TOS:       256 STACK[SP]:       256 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 433 IP:   800 TOS:        10 STACK[SP]:        10 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 434 IP:   832 TOS:        10 STACK[SP]:        10 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 436 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:        10 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 438 IP:   896 TOS:       256 STACK[SP]:       256 STACK[SP-1]:        10 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 440 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       256 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 442 IP:   960 TOS:       288 STACK[SP]:       288 STACK[SP-1]:        10 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 444 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       288 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 445 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       288 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 447 IP:  1056 TOS:       288 STACK[SP]:       288 STACK[SP-1]:        10 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 449 IP:  1088 TOS:        10 STACK[SP]:        10 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 451 IP:  1120 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: jump  ARG:       704
+  DEBUG   machine:decode        TICK: 452 IP:   704 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 454 IP:   736 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 456 IP:   768 TOS:       288 STACK[SP]:       288 STACK[SP-1]:         0 SP:   1 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 458 IP:   800 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: outc  ARG:         0
+  DEBUG   machine:decode        TICK: 459 IP:   832 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 461 IP:   864 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:         0 SP:   2 INSTR: mov   ARG:         0
+  DEBUG   machine:decode        TICK: 463 IP:   896 TOS:       288 STACK[SP]:       288 STACK[SP-1]:         0 SP:   2 INSTR: push  ARG:        32
+  DEBUG   machine:decode        TICK: 465 IP:   928 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       288 SP:   3 INSTR: add   ARG:         0
+  DEBUG   machine:decode        TICK: 467 IP:   960 TOS:       320 STACK[SP]:       320 STACK[SP-1]:         0 SP:   2 INSTR: push  ARG:      6432
+  DEBUG   machine:decode        TICK: 469 IP:   992 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       320 SP:   3 INSTR: ld    ARG:         0
+  DEBUG   machine:decode        TICK: 470 IP:  1024 TOS:      6432 STACK[SP]:      6432 STACK[SP-1]:       320 SP:   3 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 472 IP:  1056 TOS:       320 STACK[SP]:       320 STACK[SP-1]:         0 SP:   2 INSTR: pop   ARG:         0
+  DEBUG   machine:decode        TICK: 474 IP:  1088 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      1152
+  DEBUG   machine:decode        TICK: 476 IP:  1152 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: hlt   ARG:         0
+out_bincode:
+- 268435456
+- 268441856
+- 1073741824
+- 536870912
+- 536870912
+- 1879048192
+- 268441856
+- 805306368
+- 1073741824
+- 268435488
+- 2952790016
+- 268441856
+- 1073741824
+- 536870912
+- 536870912
+- 2415919648
+- 2684354720
+- 268435456
+- 268441888
+- 1073741824
+- 536870912
+- 536870912
+- 268441888
+- 805306368
+- 805306368
+- 1342177280
+- 268441888
+- 805306368
+- 268435488
+- 2952790016
+- 268441888
+- 1073741824
+- 536870912
+- 536870912
+- 2415920256
+- 2684355264
+out_mnemonics:
+- push 0
+- push 6400
+- ld 0
+- pop 0
+- pop 0
+- inp 0
+- push 6400
+- mov 0
+- ld 0
+- push 32
+- add 0
+- push 6400
+- ld 0
+- pop 0
+- pop 0
+- jz 544
+- jump 160
+- push 0
+- push 6432
+- ld 0
+- pop 0
+- pop 0
+- push 6432
+- mov 0
+- mov 0
+- outc 0
+- push 6432
+- mov 0
+- push 32
+- add 0
+- push 6432
+- ld 0
+- pop 0
+- pop 0
+- jz 1152
+- jump 704

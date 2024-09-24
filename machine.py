@@ -6,11 +6,17 @@ from isa import Instr, read_code
 
 
 class Writer:
-    def __init__(self) -> None:
-        self.buf = []
+    def __init__(self):
+        self.buf = ""
 
-    def send(self, val):
-        self.buf.append(val)
+    def outc(self, c):
+        # don't print special character for testing
+        if c == 0 or c == 13:
+            return
+        self.buf += chr(c)
+
+    def outi(self, i):
+        self.buf += "<" + str(i) + ">"
 
 
 class Reader:
@@ -68,8 +74,8 @@ class DataPath:
         self.sel_tos = 0
         self.sel_alu = 0
         self.data_memory = {}
-        self.writer = writer
         self.reader = reader
+        self.writer = writer
 
     def latch_sp(self):
         match self.sel_sp:
@@ -118,8 +124,11 @@ class DataPath:
     def inp(self):
         self.input = self.reader.receive()
 
-    def out(self):
-        self.writer.send(self.tos)
+    def outc(self):
+        self.writer.outc(self.tos)
+
+    def outi(self):
+        self.writer.outi(self.tos)
 
 
 class ControlUnit:
@@ -152,7 +161,7 @@ class ControlUnit:
     def __repr__(self):
         """Вернуть строковое представление состояния процессора."""
         i = Instr((self.instr_memory[self.ip] & (15 << 28)) >> 28).name
-        return "TICK: {:3d} IP: {:3d} TOS: {:3d} STACK[SP]: {:3d} STACK[SP-1]: {:3d} SP: {:3d} INSTR: {:5s} ARG: {:3d}".format(
+        return "TICK: {:3d} IP: {:5d} TOS: {:9d} STACK[SP]: {:9d} STACK[SP-1]: {:9d} SP: {:3d} INSTR: {:5s} ARG: {:9d}".format(
             self._tick,
             self.ip,
             self.data_path.tos,
@@ -207,12 +216,17 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.sel_tos = Tos.STACK
                 self.data_path.latch_tos()
-            case 5:  # out
+            case 5:  # outc
                 self.sel_ip = Ip.INC
                 self.latch_ip()
-                self.data_path.out()
+                self.data_path.outc()
                 self.tick()
-            case 6:  # in
+            case 6:  # outi
+                self.sel_ip = Ip.INC
+                self.latch_ip()
+                self.data_path.outi()
+                self.tick()
+            case 7:  # in
                 self.data_path.sel_tos = Tos.INPUT
                 self.data_path.sel_sp = Sp.INC
                 self.data_path.inp()
@@ -223,7 +237,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.latch_st()
                 self.tick()
-            case 7:  # jns
+            case 8:  # jns
                 ip = Ip.INC
                 if self.data_path.tos >= 0:
                     ip = Ip.ADDR
@@ -236,7 +250,7 @@ class ControlUnit:
                 self.sel_ip = ip
                 self.latch_ip()
                 self.tick()
-            case 8:  # jz
+            case 9:  # jz
                 ip = Ip.INC
                 if self.data_path.tos == 0:
                     ip = Ip.ADDR
@@ -249,12 +263,12 @@ class ControlUnit:
                 self.sel_ip = ip
                 self.latch_ip()
                 self.tick()
-            case 9:  # jump
+            case 10:  # jump
                 self.sel_ip = Ip.ADDR
                 self.addr = arg
                 self.latch_ip()
                 self.tick()
-            case 10:  # add
+            case 11:  # add
                 self.data_path.sel_alu = Alu.PLUS
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC
@@ -266,7 +280,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.latch_st()
                 self.tick()
-            case 11:  # sub
+            case 12:  # sub
                 self.data_path.sel_alu = Alu.MINUS
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC
@@ -278,7 +292,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.latch_st()
                 self.tick()
-            case 12:  # mul
+            case 13:  # mul
                 self.data_path.sel_alu = Alu.MUL
                 self.data_path.sel_tos = Tos.ALU
                 self.data_path.sel_sp = Sp.DEC

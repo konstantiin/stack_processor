@@ -229,25 +229,138 @@ jobs:
 
 Отформатированные машинный код (человекочитаемый не бинарный вид):
 
+``` asm
+push 72
+push 0
+ld
+pop
+pop
+push 101
+push 32
+ld
+pop
+pop
+push 108
+push 64
+ld
+pop
+pop
+push 108
+push 96
+ld
+pop
+pop
+push 111
+push 128
+ld
+pop
+pop
+push 44
+push 160
+ld
+pop
+pop
+push 32
+push 192
+ld
+pop
+pop
+push 119
+push 224
+ld
+pop
+pop
+push 111
+push 256
+ld
+pop
+pop
+push 114
+push 288
+ld
+pop
+pop
+push 108
+push 320
+ld
+pop
+pop
+push 100
+push 352
+ld
+pop
+pop
+push 33
+push 384
+ld
+pop
+pop
+push 0
+push 416
+ld
+pop
+pop
+push 0
+push 448
+ld
+pop
+pop
+push 448
+mov
+mov
+outc
+push 448
+mov
+push 32
+add
+push 448
+ld
+pop
+pop
+jz 2848
+jump 2400
+
+```
+
+Журнал для программы Hello_world(не весь):
+
 ``` python
-
-```
-
-Отформатированные данные:
-
-```
-[72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33, 0]
-```
-
-Журнал (не весь):
-
-```
-```
-
-### Результаты
-
-```text
-
+PS E:\projects\stack_vm> python translate.py examples/hello_world.lisp bin
+PS E:\projects\stack_vm> python machine.py bin examples/inp
+DEBUG:root:started emeulation
+DEBUG:root:TICK:   0 IP:     0 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:        72
+DEBUG:root:TICK:   2 IP:    32 TOS:        72 STACK[SP]:        72 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:         0    
+DEBUG:root:TICK:   4 IP:    64 TOS:         0 STACK[SP]:         0 STACK[SP-1]:        72 SP:   2 INSTR: ld    ARG:         0    
+DEBUG:root:TICK:   5 IP:    96 TOS:         0 STACK[SP]:         0 STACK[SP-1]:        72 SP:   2 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:   7 IP:   128 TOS:        72 STACK[SP]:        72 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:   9 IP:   160 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:       101    
+DEBUG:root:TICK:  11 IP:   192 TOS:       101 STACK[SP]:       101 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:        32    
+DEBUG:root:TICK:  13 IP:   224 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       101 SP:   2 INSTR: ld    ARG:         0    
+DEBUG:root:TICK:  14 IP:   256 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       101 SP:   2 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  16 IP:   288 TOS:       101 STACK[SP]:       101 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  18 IP:   320 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:       108    
+DEBUG:root:TICK:  20 IP:   352 TOS:       108 STACK[SP]:       108 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:        64    
+DEBUG:root:TICK:  22 IP:   384 TOS:        64 STACK[SP]:        64 STACK[SP-1]:       108 SP:   2 INSTR: ld    ARG:         0    
+DEBUG:root:TICK:  23 IP:   416 TOS:        64 STACK[SP]:        64 STACK[SP-1]:       108 SP:   2 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  25 IP:   448 TOS:       108 STACK[SP]:       108 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  27 IP:   480 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:       108    
+DEBUG:root:TICK:  29 IP:   512 TOS:       108 STACK[SP]:       108 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:        96    
+DEBUG:root:TICK:  31 IP:   544 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       108 SP:   2 INSTR: ld    ARG:         0    
+DEBUG:root:TICK:  32 IP:   576 TOS:        96 STACK[SP]:        96 STACK[SP-1]:       108 SP:   2 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  34 IP:   608 TOS:       108 STACK[SP]:       108 STACK[SP-1]:         0 SP:   1 INSTR: pop   ARG:         0    
+DEBUG:root:TICK:  36 IP:   640 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: push  ARG:       111    
+DEBUG:root:TICK:  38 IP:   672 TOS:       111 STACK[SP]:       111 STACK[SP-1]:         0 SP:   1 INSTR: push  ARG:       128    
+DEBUG:root:TICK:  40 IP:   704 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       111 SP:   2 INSTR: ld    ARG:         0    
+DEBUG:root:TICK:  41 IP:   736 TOS:       128 STACK[SP]:       128 STACK[SP-1]:       111 SP:   2 INSTR: pop   ARG:         0    
+<===============================================================================================================================> 
+DEBUG:root:TICK: 473 IP:  2624 TOS:        32 STACK[SP]:        32 STACK[SP-1]:       416 SP:   3 INSTR: add   ARG:         0    
+DEBUG:root:TICK: 475 IP:  2656 TOS:       448 STACK[SP]:       448 STACK[SP-1]:         0 SP:   2 INSTR: push  ARG:       448    
+DEBUG:root:TICK: 477 IP:  2688 TOS:       448 STACK[SP]:       448 STACK[SP-1]:       448 SP:   3 INSTR: ld    ARG:         0    
+DEBUG:root:TICK: 478 IP:  2720 TOS:       448 STACK[SP]:       448 STACK[SP-1]:       448 SP:   3 INSTR: pop   ARG:         0    
+DEBUG:root:TICK: 480 IP:  2752 TOS:       448 STACK[SP]:       448 STACK[SP-1]:         0 SP:   2 INSTR: pop   ARG:         0    
+DEBUG:root:TICK: 482 IP:  2784 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   1 INSTR: jz    ARG:      2848    
+DEBUG:root:TICK: 484 IP:  2848 TOS:         0 STACK[SP]:         0 STACK[SP-1]:         0 SP:   0 INSTR: hlt   ARG:         0    
+Hello, world!
 ```
 
 ### prob2
