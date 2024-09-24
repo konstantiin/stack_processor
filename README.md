@@ -99,7 +99,9 @@ pop;          pop stack
 mov;          value at [tos] to tos
 ld;           saves tos-1 at [tos]
 
-out;          sends tos to stdout
+outc;          sends tos to stdout(as char)
+outi;          sends tos to stdout(as int)
+
 in;           reads one byte to tos  
 
 jns addr;     jumps to addr if tos >= 0
@@ -141,7 +143,7 @@ sub;          tos-1 - tos -> tos
   - памяти данных
   - устройства ввода/вывода
   - control unit (если в инструкции есть операнд)
-- `in/out` -- сигнал для устройства ввода/вывода
+- `in/outc/outi` -- сигнал для устройства ввода/вывода (передаётся порт соответсвующего устройства ввода вывода)
 - `w/r` -- сигнал для памяти (запись, чтение данных)
 - `sel_st` -- увеличить `SP` или уменьшить
 - `alu` -- сигнал АЛУ выполнить сложение или вычитание
