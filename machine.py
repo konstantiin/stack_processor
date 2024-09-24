@@ -11,7 +11,7 @@ class Writer:
 
     def outc(self, c):
         # don't print special character for testing
-        if c == 0 or c == 13:
+        if c == 0:
             return
         self.buf += chr(c)
 
