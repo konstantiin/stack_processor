@@ -216,6 +216,7 @@ class ControlUnit:
                 self.latch_ip()
                 self.data_path.sel_tos = Tos.STACK
                 self.data_path.latch_tos()
+                self.tick()
             case 5:  # outc
                 self.sel_ip = Ip.INC
                 self.latch_ip()
